@@ -9,6 +9,15 @@
 // @version     0.0.2
 // ==/UserScript==
 
+/*
+Debug in Chrome Console, manually import JQuery.
+
+var importJs=document.createElement('script');
+importJs.setAttribute("type","text/javascript");
+importJs.setAttribute("src", 'http://code.jquery.com/jquery-3.2.1.min.js');
+document.head.appendChild(importJs);
+*/
+
 "use strict";
 
 if (0 === $('.top-1.gen-1').length) {
@@ -22,7 +31,24 @@ var myBtnGenTextContent = "全部打开",
     myBtnExtTextContent = "全部打开：普通",
     myBtn60sTextContent = "罗胖60秒",
     btnToggleTextDisplayAll = "全部显示",
-    btnToggleTextHideAll = "全部显示";
+    btnToggleTextHideAll = "全部显示",
+    batch7 = "一次打开7页",
+    batch10 = "一次打开10页";
+
+var dayOfWeek = new Date().getDay();
+var weekendMode = (dayOfWeek == 6 || dayOfWeek == 0) && localStorage.getItem("weekend_batch_size") != undefined && localStorage.getItem("weekend_batch_size") === "7";
+
+var radioBatchSize10 = document.createElement("input");
+radioBatchSize10.type = "radio";
+radioBatchSize10.name = "radioBatchSize";
+radioBatchSize10.value = 10;
+radioBatchSize10.checked = !weekendMode;
+
+var radioBatchSize7 = document.createElement("input");
+radioBatchSize7.type = "radio";
+radioBatchSize7.name = "radioBatchSize";
+radioBatchSize7.value = 7;
+radioBatchSize7.checked = weekendMode;
 
 var classToColor = {
     "gen": "lightseagreen",
@@ -115,6 +141,18 @@ $('document').ready(() => {
                           myBtn60s,
                           document.createElement("br"));
 
+    var radioLabel10 = document.createElement("span");
+    radioLabel10.innerHTML = batch10;
+    document.body.prepend(radioLabel10);
+    document.body.prepend(radioBatchSize10);
+
+    var radioLabel7 = document.createElement("span");
+    radioLabel7.innerHTML = batch7;
+    document.body.prepend(radioLabel7);
+    document.body.prepend(radioBatchSize7);
+
+    prependTabs(6);
+
     myLink = document.createElement("a");
     myLink.text = ">";
     myLink.href = "#";
@@ -144,6 +182,7 @@ $('document').ready(() => {
             $('[class^=div]').each((idx, thisDiv) => thisDiv.hidden = true);
             $('.div-' + clickEvent.target.text)[0].hidden = false;
             $('#currentSelectedPage')[0].value = clickEvent.target.text; // synchronize to <select> tag.
+            window.scrollTo(0,0);
         });
     });
 
@@ -164,7 +203,7 @@ $('document').ready(() => {
         }
     });
     $('#myBtn60s').click(() =>  {
-        var maxPages = $("#concurrentOpenPages")[0].value,
+        var maxPages = $("input[name='radioBatchSize']:checked").val(),
             openDelay = $("#windowOpenDelay")[0].value,
             currentOpenPages = 0;
         $('a[class*=ext-' + $('#currentSelectedPage')[0].value + ']').each((idx, thisLnk) => {
@@ -212,7 +251,22 @@ $('document').ready(() => {
         }
         $('#currentSelectedPage').change();
     });
+    $('input[name=radioBatchSize').change(function () {
+        localStorage.setItem("weekend_batch_size", this.value);
+    });
 });
+
+function pageUpOrDown()
+{
+    var keyCode = window.event.keyCode;
+    if (keyCode == 37) { // ArrowLeft
+        $('#page-previous').click();
+    } else if (keyCode == 39) { // ArrowRight
+        $('#page-next').click();
+    }
+}
+
+document.onkeydown = pageUpOrDown;
 
 function prependTabs(n) {
     for (var i=0; i<n; i++) {
@@ -224,7 +278,7 @@ function prependTabs(n) {
 
 function openAll(className) {
     // console.debug("button openAll [" + className + "] articles is clicked.");
-    var maxPages = $("#concurrentOpenPages")[0].value,
+    var maxPages = $("input[name='radioBatchSize']:checked").val(),
         openDelay = $("#windowOpenDelay")[0].value,
         currentOpenPages = 0;
     $('a[class*=' + className + '-' + $('#currentSelectedPage')[0].value + ']').each((idx, thisLnk) => {

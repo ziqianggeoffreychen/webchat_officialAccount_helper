@@ -33,7 +33,7 @@ myButton.style = "background: #fafafa; border-style: dashed";
 myButton.onclick = function() {
     var allImg = document.querySelectorAll('img');
     var imgCount = allImg.length;
-    var imgItr;
+    var imgItr, i;
     for (i=0; i < imgCount; i++) {
         imgItr = allImg[i];
         if ("img_loading" === imgItr.getAttribute('class')) {
@@ -46,8 +46,9 @@ myButton.onclick = function() {
             console.debug("set auto width to [" + imgItr.src + "]");
             imgItr.style.width = 'auto';
             imgItr.style.height = 'auto';
-            imgItr.setAttribute('_width', 'auto');
+            // imgItr.setAttribute('_width', 'auto');
         }
+        imgItr.onload = undefined;
     }
     document.querySelector('#restoreImgSize').scrollIntoView();
     document.querySelector('#restoreImgSize').blur();
@@ -68,13 +69,12 @@ myButton.onclick = function() {
             imgItr.src = imgItr.getAttribute("data-src").replace(/\/0\..*/, "/640");
         }
         if (imgItr.naturalWidth > widthInDataS) { // never enlarge the image.
-            console.debug("Natural width is larger, set it to width in data-s attribute: [" + imgItr.src + "]")
+            console.debug("Natural width is larger, set it to width in data-s attribute: [" + imgItr.src + "]");
             imgItr.style.width = widthInDataS + "px";
         }
     }
-    $('[style*=556px]').width('auto');
-    $('[style*=547px]').width('auto');
-    $('[style*=539px]').width('auto');
+    $('[style*=width]').width('auto');
+    $('.rich_media_area_primary_inner').css('max-width', '100%');
 };
 document.querySelector('#divAux').prepend(myButton);
 document.querySelector('#restoreImgSize').click();
@@ -88,6 +88,10 @@ var padding10px = document.querySelector('[style^="padding: 10px; display"]');
 if (null !== padding10px) {
     padding10px.style.width="99%";
 }
+
 setTimeout(function() {
     document.querySelector('#restoreImgSize').click();
+    unsafeWindow.onscroll = undefined;
+    unsafeWindow.title = msg_title;
+    document.title = msg_title;
 }, 1000);
