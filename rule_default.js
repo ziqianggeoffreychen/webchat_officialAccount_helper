@@ -289,7 +289,7 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
         }
     }
 
-    console.log("Writing to " + wxOfficialAccountHistory + " ...");
+    console.log("Writing to " + wxOfficialAccountHistory + " ... Page: " + page);
     // console.trace("Who is calling me, let's have a look:")
     fs.writeFile(wxOfficialAccountHistory, outputDiv + '</div>\r\n', {flag: "a"}, (err) => {
         if (err) throw err;
