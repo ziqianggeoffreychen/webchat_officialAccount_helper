@@ -161,6 +161,7 @@ module.exports = {
                 if (res.statusCode === 200) {
                     pageNumber = 0; // reset page number.
                     serverResp = entities.decode(serverResData.toString()).replace(/\\/g, "");  // strip "\" in URL.
+                    wxOfficialAccountHistory = path.join(process.env['USERPROFILE'], "Downloads", /var nickname = \"(.*?)\"/.exec(serverResp)[1] + ".html");
                     saveUrls(/var msgList = \'(.*?)\';/.exec(serverResp)[1]);
                 } else {
                     console.log("Unexpected status code: " + res.statusCode)
