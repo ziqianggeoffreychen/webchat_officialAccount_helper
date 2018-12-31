@@ -36,65 +36,65 @@ module.exports = {
    * @param {object} responseDetail
    */
   *beforeSendResponse(requestDetail, responseDetail) {
-	var reqUrl = requestDetail.url,
-		res = responseDetail.response,
-		serverResData = responseDetail.response.body.toString();
+    var reqUrl = requestDetail.url,
+        res = responseDetail.response,
+        serverResData = responseDetail.response.body.toString();
     if (/"ad":.*"errCode":/.test(serverResData)) {
         var respWithoutAd = Object.assign({}, responseDetail.response);
         respWithoutAd.body = serverResData.replace(/"ad":.*"errCode":/, '"ad":"{}","errCode":');
         console.log("Ads: terminated!");
         return {response: respWithoutAd};
     }
-	if (/mp\/getmasssendmsg/i.test(reqUrl)) { // 1st flavor
-		try {
-			if (res.statusCode === 200) { // should ignore 302
-				pageNumber = 0; // reset page number.
-				saveUrls(/msgList = (.*?);/.exec(entities.decode(serverResData))[1]);
-			} else {
-				console.log("Unexpected status code:", res.statusCode)
-			}
-		} catch (e) {
-			console.log(e);
-			try {
-				var json = JSON.parse(serverResData);
-				if (json.general_msg_list != []) {
-					saveUrls(json.general_msg_list);
-				}
-			} catch (e) {
-				console.log(e);
-			}
-		}
-	} else if (/mp\/profile_ext\?action=home.*&devicetype=/i.test(reqUrl)) {  // 2nd flavor: the home action
-		try {
-			if (res.statusCode === 200) {
-				pageNumber = 0; // reset page number.
-				var serverResp = entities.decode(serverResData).replace(/\\/g, "");  // strip "\" in URL.
-				wxOfficialAccountHistory = path.join(process.env['USERPROFILE'], "Downloads", /var nickname = \"(.*?)\"/.exec(serverResp)[1] + ".html");
-				saveUrls(/var msgList = \'(.*?)\';/.exec(serverResp)[1]);
-			} else {
-				console.log("Unexpected status code:", res.statusCode)
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	} else if (/mp\/profile_ext\?action=getmsg/i.test(reqUrl)) { // 2nd flavor: the getmsg action
-		try {
-			var json = JSON.parse(serverResData);
-			if (json.general_msg_list != []) {
-				saveUrls(json.general_msg_list);
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	} else if (/profile\?src=/i.test(reqUrl)) { // 3nd floavor: via sogou profile API
-		try {
-			console.log(responseDetail);
-			pageNumber = 0; // reset page number.
-			saveUrls(/var msgList = ({.*?});/.exec(serverResData)[1]);
-		} catch (e) {
-			console.log(e);
-		}
-	}
+    if (/mp\/getmasssendmsg/i.test(reqUrl)) { // 1st flavor
+        try {
+            if (res.statusCode === 200) { // should ignore 302
+                pageNumber = 0; // reset page number.
+                saveUrls(/msgList = (.*?);/.exec(entities.decode(serverResData))[1]);
+            } else {
+                console.log("Unexpected status code:", res.statusCode)
+            }
+        } catch (e) {
+            console.log(e);
+            try {
+                var json = JSON.parse(serverResData);
+                if (json.general_msg_list != []) {
+                    saveUrls(json.general_msg_list);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    } else if (/mp\/profile_ext\?action=home.*&devicetype=/i.test(reqUrl)) {  // 2nd flavor: the home action
+        try {
+            if (res.statusCode === 200) {
+                pageNumber = 0; // reset page number.
+                var serverResp = entities.decode(serverResData).replace(/\\/g, "");  // strip "\" in URL.
+                wxOfficialAccountHistory = path.join(process.env['USERPROFILE'], "Downloads", /var nickname = \"(.*?)\"/.exec(serverResp)[1] + ".html");
+                saveUrls(/var msgList = \'(.*?)\';/.exec(serverResp)[1]);
+            } else {
+                console.log("Unexpected status code:", res.statusCode)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    } else if (/mp\/profile_ext\?action=getmsg/i.test(reqUrl)) { // 2nd flavor: the getmsg action
+        try {
+            var json = JSON.parse(serverResData);
+            if (json.general_msg_list != []) {
+                saveUrls(json.general_msg_list);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    } else if (/profile\?src=/i.test(reqUrl)) { // 3nd floavor: via sogou profile API
+        try {
+            console.log(responseDetail);
+            pageNumber = 0; // reset page number.
+            saveUrls(/var msgList = ({.*?});/.exec(serverResData)[1]);
+        } catch (e) {
+            console.log(e);
+        }
+    }
     return null;
   },
 
@@ -135,7 +135,7 @@ module.exports = {
 };
 
 function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
-	// console.log(urls);
+    // console.log(urls);
     var appMsg = JSON.parse(urls).list, msgExt, msgInfo, msgLength = appMsg.length, page = ++pageNumber;
     var outputDiv = '<div class="div-' + page + '">\r\n';
     var realDate, strHour, strMin, strSec, realTitle, realPermanentUrl, realDigest, innerList, innerListLength;
