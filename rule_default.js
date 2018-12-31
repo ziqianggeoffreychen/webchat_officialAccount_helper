@@ -1,4 +1,5 @@
 'use strict';
+require('console-stamp')(console, 'HH:MM:ss.l');
 var path       = require("path"),
     fs         = require("fs"),
     Entities   = require('html-entities').AllHtmlEntities;
@@ -37,19 +38,25 @@ module.exports = {
   *beforeSendResponse(requestDetail, responseDetail) {
 	var reqUrl = requestDetail.url,
 		res = responseDetail.response,
-		serverResData = responseDetail.response.body;
+		serverResData = responseDetail.response.body.toString();
+    if (/"ad":.*"errCode":/.test(serverResData)) {
+        var respWithoutAd = Object.assign({}, responseDetail.response);
+        respWithoutAd.body = serverResData.replace(/"ad":.*"errCode":/, '"ad":"{}","errCode":');
+        console.log("Ads: terminated!");
+        return {response: respWithoutAd};
+    }
 	if (/mp\/getmasssendmsg/i.test(reqUrl)) { // 1st flavor
 		try {
 			if (res.statusCode === 200) { // should ignore 302
 				pageNumber = 0; // reset page number.
-				saveUrls(/msgList = (.*?);/.exec(entities.decode(serverResData.toString()))[1]);
+				saveUrls(/msgList = (.*?);/.exec(entities.decode(serverResData))[1]);
 			} else {
-				console.log("Unexpected status code: " + res.statusCode)
+				console.log("Unexpected status code:", res.statusCode)
 			}
 		} catch (e) {
 			console.log(e);
 			try {
-				var json = JSON.parse(serverResData.toString());
+				var json = JSON.parse(serverResData);
 				if (json.general_msg_list != []) {
 					saveUrls(json.general_msg_list);
 				}
@@ -61,18 +68,18 @@ module.exports = {
 		try {
 			if (res.statusCode === 200) {
 				pageNumber = 0; // reset page number.
-				var serverResp = entities.decode(serverResData.toString()).replace(/\\/g, "");  // strip "\" in URL.
+				var serverResp = entities.decode(serverResData).replace(/\\/g, "");  // strip "\" in URL.
 				wxOfficialAccountHistory = path.join(process.env['USERPROFILE'], "Downloads", /var nickname = \"(.*?)\"/.exec(serverResp)[1] + ".html");
 				saveUrls(/var msgList = \'(.*?)\';/.exec(serverResp)[1]);
 			} else {
-				console.log("Unexpected status code: " + res.statusCode)
+				console.log("Unexpected status code:", res.statusCode)
 			}
 		} catch (e) {
 			console.log(e);
 		}
 	} else if (/mp\/profile_ext\?action=getmsg/i.test(reqUrl)) { // 2nd flavor: the getmsg action
 		try {
-			var json = JSON.parse(serverResData.toString());
+			var json = JSON.parse(serverResData);
 			if (json.general_msg_list != []) {
 				saveUrls(json.general_msg_list);
 			}
@@ -83,7 +90,7 @@ module.exports = {
 		try {
 			console.log(responseDetail);
 			pageNumber = 0; // reset page number.
-			saveUrls(/var msgList = ({.*?});/.exec(serverResData.toString())[1]);
+			saveUrls(/var msgList = ({.*?});/.exec(serverResData)[1]);
 		} catch (e) {
 			console.log(e);
 		}
@@ -175,7 +182,7 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
         }
     }
 
-    console.log("Write to " + wxOfficialAccountHistory + " ... Page: " + page);
+    console.log("Write to", wxOfficialAccountHistory, "Page:", page);
     // console.trace("Who is calling me, let's have a look:")
     fs.writeFile(wxOfficialAccountHistory, outputDiv + '</div>\r\n', {flag: "a"}, (err) => {
         if (err) throw err;
