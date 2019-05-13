@@ -64,10 +64,6 @@ myButton.onclick = function() {
         // imgDataS[i].style.width = (undefined != dataW) ? dataW+"px" : imgDataS[i].getAttribute('data-s').split(',')[1]+"px";
         imgItr = imgDataS[i];
         widthInDataS = imgItr.getAttribute('data-s').split(',')[1];
-        if ("640" === widthInDataS) { // 640px is a common one, let's handle it.
-            console.debug("set src to 640px: [" + imgItr.src + "]");
-            imgItr.src = imgItr.getAttribute("data-src").replace(/\/0\..*/, "/640");
-        }
         if (imgItr.naturalWidth > widthInDataS) { // never enlarge the image.
             console.debug("Natural width is larger, set it to width in data-s attribute: [" + imgItr.src + "]");
             imgItr.style.width = widthInDataS + "px";
