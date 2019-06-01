@@ -1,2 +1,2 @@
-# webchat_officialAccount_helper
-For an easy read for webchat offical account articals.
+# wechat_officialAccount_helper
+For an easy read for wechat offical account articals.

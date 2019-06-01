@@ -5,6 +5,7 @@ var path       = require("path"),
     Entities   = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 var wxOfficialAccountHistory = path.join(process.env['USERPROFILE'], "Downloads", "wxOfficialAccountHistory.html"),
+    wxPullHistory            = path.join(process.env['USERPROFILE'], "Downloads", "_articles-to-read", "wechat_pull_history.log"),
     pageNumber = 0;
 
 module.exports = {
@@ -185,6 +186,9 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
     console.log("Write to", wxOfficialAccountHistory, "Page:", page, "@", strDate);
     // console.trace("Who is calling me, let's have a look:")
     fs.writeFile(wxOfficialAccountHistory, outputDiv + '</div>\r\n', {flag: "a"}, (err) => {
+        if (err) throw err;
+    });
+    fs.writeFile(wxPullHistory, wxOfficialAccountHistory + " Page: " + page + "@" + strDate, {flag: "a"}, (err) => {
         if (err) throw err;
     });
 }
