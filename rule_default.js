@@ -188,7 +188,7 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
     fs.writeFile(wxOfficialAccountHistory, outputDiv + '</div>\r\n', {flag: "a"}, (err) => {
         if (err) throw err;
     });
-    fs.writeFile(wxPullHistory, wxOfficialAccountHistory + " Page: " + page + "@" + strDate, {flag: "a"}, (err) => {
+    fs.writeFile(wxPullHistory, wxOfficialAccountHistory + " Page: " + page + "@" + strDate + "\n", {flag: "a"}, (err) => {
         if (err) throw err;
     });
 }
