@@ -139,31 +139,18 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
     // console.log(urls);
     var appMsg = JSON.parse(urls).list, msgExt, msgInfo, msgLength = appMsg.length, page = ++pageNumber;
     var outputDiv = '<div class="div-' + page + '">\r\n';
-    var realDate, strHour, strMin, strSec, realTitle, realPermanentUrl, realDigest, innerList, innerListLength;
+    var strDate, realTitle, realPermanentUrl, realDigest, innerList, innerListLength;
     for (var i = 0; i<msgLength; i++) {
         msgExt = appMsg[i].app_msg_ext_info;
         if (undefined === msgExt) continue; // should be pure image or text rather than articles. e.g., image_msg_ext_info
         realTitle        = msgExt.title;
         realDigest       = msgExt.digest;
         realPermanentUrl = msgExt.content_url;
+        strDate          = formatDate(appMsg[i].comm_msg_info.datetime * 1000);
         if (realPermanentUrl.length > 0) { // sometimes, it is empty in this level.
             if (realPermanentUrl.indexOf("http") !== 0) {
                 realPermanentUrl = "https://mp.weixin.qq.com" + realPermanentUrl;
             }
-            realDate = new Date(appMsg[i].comm_msg_info.datetime * 1000);
-            strHour = realDate.getHours();
-            if (strHour < 10) {
-                strHour = "0" + strHour; // prepend "0" to be fixed length hour string
-            }
-            strMin = realDate.getMinutes();
-            if (strMin < 10) {
-                strMin = "0" + strMin;
-            }
-            strSec = realDate.getSeconds();
-            if (strSec < 10) {
-                strSec = "0" + strSec;
-            }
-            var strDate = realDate.getFullYear() + "-" + (realDate.getMonth()+1) + "-" + realDate.getDate() + " " + strHour + ":" + strMin + ":" + strSec;
             outputDiv += strDate + '&emsp;<a class="top-' + page + ' gen-' + page + '" target="_blank" href="' + realPermanentUrl + '">' + realTitle + '</a>&emsp;' + realDigest + '<br>\r\n';
         }
 
@@ -188,7 +175,27 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
     fs.writeFile(wxOfficialAccountHistory, outputDiv + '</div>\r\n', {flag: "a"}, (err) => {
         if (err) throw err;
     });
-    fs.writeFile(wxPullHistory, wxOfficialAccountHistory + " Page: " + page + "@" + strDate + "\n", {flag: "a"}, (err) => {
-        if (err) throw err;
-    });
+    if (pageNumber === 1) {
+        fs.writeFile(wxPullHistory, formatDate(appMsg[0].comm_msg_info.datetime * 1000) + "\t" + wxOfficialAccountHistory + "\n", {flag: "a"}, (err) => {
+            if (err) throw err;
+        });
+    }
+}
+
+function formatDate(milliseconds) {
+    var realDate, strHour, strMin, strSec;
+    realDate = new Date(milliseconds);
+    strHour = realDate.getHours();
+    if (strHour < 10) {
+        strHour = "0" + strHour; // prepend "0" to be fixed length hour string
+    }
+    strMin = realDate.getMinutes();
+    if (strMin < 10) {
+        strMin = "0" + strMin;
+    }
+    strSec = realDate.getSeconds();
+    if (strSec < 10) {
+        strSec = "0" + strSec;
+    }
+    return realDate.getFullYear() + "-" + (realDate.getMonth()+1) + "-" + realDate.getDate() + " " + strHour + ":" + strMin + ":" + strSec;
 }
