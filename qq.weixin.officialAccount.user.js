@@ -281,7 +281,7 @@ function openAll(className) {
     var maxPages = $("input[name='radioBatchSize']:checked").val(),
         openDelay = $("#windowOpenDelay")[0].value,
         currentOpenPages = 0;
-    $('a[class*=' + className + '-' + $('#currentSelectedPage')[0].value + ']').each((idx, thisLnk) => {
+    $('.' + className + '-' + $('#currentSelectedPage')[0].value).each((idx, thisLnk) => {
         if ((currentOpenPages < maxPages) &&
             (undefined === thisLnk.visited)) {
             thisLnk.visited = true;

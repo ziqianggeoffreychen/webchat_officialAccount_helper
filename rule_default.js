@@ -180,6 +180,7 @@ function saveUrls(urls) {    // Save content_urls in msgList (JSON) to file.
             if (err) throw err;
         });
     }
+    process.stdout.write('\x07');
 }
 
 function formatDate(milliseconds) {
