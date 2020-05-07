@@ -45,7 +45,7 @@ while True:
 
     print('.', end='')
     time.sleep(60)
-  except RemoteDisconnected:
+  except http.client.RemoteDisconnected:
     print('_', end='')
     time.sleep(120)
 
