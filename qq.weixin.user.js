@@ -5,6 +5,7 @@
 // @encoding	utf-8
 // @include     http://mp.weixin.qq.com/s*
 // @include     https://mp.weixin.qq.com/s*
+// @include     https://mp.weixin.qq.com/mp/appmsg/*
 // @require     http://code.jquery.com/jquery-3.2.1.min.js
 // @run-at	    document-end
 // @version	    0.0.1

@@ -89,7 +89,6 @@ module.exports = {
         }
     } else if (/profile\?src=/i.test(reqUrl)) { // 3nd floavor: via sogou profile API
         try {
-            console.log(responseDetail);
             pageNumber = 0; // reset page number.
             saveUrls(/var msgList = ({.*?});/.exec(serverResData)[1]);
         } catch (e) {

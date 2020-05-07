@@ -3,7 +3,7 @@
 // @author      Geoffrey Chen
 // @description Add a button to open all URLs in one page.
 // @encoding    utf-8
-// @include     file:///C:/Users/eziqche/Downloads/*.html
+// @include     file:///C:/Users/*.html
 // @require     http://code.jquery.com/jquery-3.2.1.min.js
 // @run-at      document-end
 // @version     0.0.2
@@ -30,6 +30,7 @@ var myBtnGenTextContent = "全部打开",
     myBtnTopTextContent = "全部打开：头条",
     myBtnExtTextContent = "全部打开：普通",
     myBtn60sTextContent = "罗胖60秒",
+    dingEverydayContent = "每日钉一下",
     btnToggleTextDisplayAll = "全部显示",
     btnToggleTextHideAll = "全部显示",
     batch7 = "一次打开7页",
@@ -102,7 +103,7 @@ $('document').ready(() => {
     var windowOpenDelay = document.createElement("input");
     windowOpenDelay.id = "windowOpenDelay";
     windowOpenDelay.type = "hidden";
-    windowOpenDelay.value = 800; // 800ms
+    windowOpenDelay.value = 400; // unit: ms
 
     var myBtnGen = document.createElement("button");
     myBtnGen.id = "openAllGenArticleOnSpecifiedPage";
@@ -217,9 +218,9 @@ $('document').ready(() => {
             }
         });
     });
-    $('#openAllGenArticleOnSpecifiedPage').click(() => {openAll('gen');});
-    $('#openAllTopArticleOnSpecifiedPage').click(() => {openAll('top');});
-    $('#openAllExtArticleOnSpecifiedPage').click(() => {openAll('ext');});
+    $('#openAllGenArticleOnSpecifiedPage').click(() => {openNextBunch('gen');});
+    $('#openAllTopArticleOnSpecifiedPage').click(() => {openNextBunch('top');});
+    $('#openAllExtArticleOnSpecifiedPage').click(() => {openNextBunch('ext');});
     $('#currentSelectedPage').change(() => {
         var currPage = $('#currentSelectedPage')[0].value;
         if ("" === currPage) {
@@ -276,8 +277,14 @@ function prependTabs(n) {
     }
 }
 
-function openAll(className) {
+function openNextBunch(className) {
     // console.debug("button openAll [" + className + "] articles is clicked.");
+    $('a[class*=ext-]').each((idx, thisLnk) => {
+        if (0 === thisLnk.innerText.indexOf(dingEverydayContent)) {
+            thisLnk.visited = true;
+            thisLnk.style.color = classToColor["gen"];
+        }
+    });
     var maxPages = $("input[name='radioBatchSize']:checked").val(),
         openDelay = $("#windowOpenDelay")[0].value,
         currentOpenPages = 0;
