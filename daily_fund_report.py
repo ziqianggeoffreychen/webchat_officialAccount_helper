@@ -53,12 +53,12 @@ value_today    = float(resp_a['seriesData0'][-1])
 value_yestoday = float(resp_a['seriesData0'][-2])
 daily_adjustment = (value_today - value_yestoday) / value_yestoday * 100
 print("[%s] %.4f -> %.4f  富国新动力A -> 日涨跌: %.4f%%"
-      % (to_date, value_yestoday, value_today, daily_adjustment))
+      % (datetime.today(), value_yestoday, value_today, daily_adjustment))
 
 value_today    = float(resp_c['seriesData0'][-1])
 value_yestoday = float(resp_c['seriesData0'][-2])
 daily_adjustment = (value_today - value_yestoday) / value_yestoday * 100
 print("[%s] %.4f -> %.4f  富国新动力C -> 日涨跌: %.4f%%"
-      % (to_date, value_yestoday, value_today, daily_adjustment))
+      % (datetime.today(), value_yestoday, value_today, daily_adjustment))
 
 winsound.MessageBeep()
