@@ -5,7 +5,7 @@ var path       = require("path"),
     Entities   = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 var wxOfficialAccountHistory = path.join(process.env['USERPROFILE'], "Downloads", "wxOfficialAccountHistory.html"),
-    wxPullHistory            = path.join(process.env['USERPROFILE'], "Downloads", "_articles-to-read", "wechat_pull_history.log"),
+    wxPullHistory            = path.join(process.env['USERPROFILE'], "OneDrive - Ericsson AB", "_articles-to-read", "wechat_pull_history.log"),
     pageNumber = 0;
 
 module.exports = {

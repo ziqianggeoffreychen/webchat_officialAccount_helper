@@ -35,6 +35,7 @@ var myBtnGenTextContent = "全部打开",
     btnToggleTextHideAll = "全部显示",
     batch7 = "一次打开7页",
     batch10 = "一次打开10页";
+    batch20 = "一次打开20页";
 
 var dayOfWeek = new Date().getDay();
 var weekendMode = (dayOfWeek == 6 || dayOfWeek == 0) && localStorage.getItem("weekend_batch_size") != undefined && localStorage.getItem("weekend_batch_size") === "7";
@@ -50,6 +51,11 @@ radioBatchSize7.type = "radio";
 radioBatchSize7.name = "radioBatchSize";
 radioBatchSize7.value = 7;
 radioBatchSize7.checked = weekendMode;
+
+var radioBatchSize20 = document.createElement("input");
+radioBatchSize20.type = "radio";
+radioBatchSize20.name = "radioBatchSize";
+radioBatchSize20.value = 20;
 
 var classToColor = {
     "gen": "lightseagreen",
@@ -141,6 +147,11 @@ $('document').ready(() => {
                           myBtnToggleDisplay,
                           myBtn60s,
                           document.createElement("br"));
+
+    var radioLabel20 = document.createElement("span");
+    radioLabel20.innerHTML = batch20;
+    document.body.prepend(radioLabel20);
+    document.body.prepend(radioBatchSize20);
 
     var radioLabel10 = document.createElement("span");
     radioLabel10.innerHTML = batch10;
