@@ -13,7 +13,11 @@
 
 //$('#js_pc_qr_code').remove();
 //$('.rich_media').style.width='100%';
-document.getElementById('js_pc_qr_code').remove();
+qrCode = document.getElementById('js_pc_qr_code');
+if (undefined != qrCode) {
+	qrCode.remove();
+}
+
 var richMedia0 = document.getElementsByClassName('rich_media')[0];
 if (undefined !== richMedia0) {
     richMedia0.style.width='100%';
@@ -92,61 +96,64 @@ setTimeout(function() {
     unsafeWindow.title = msg_title;
     document.title = msg_title;
 
-    if (window.frames.length > 0) {
-        var videoFill = window.frames[0].document.querySelector('video');
-        if (undefined !== videoFill) {
-            var nbspSpan = document.createElement("span");
-            nbspSpan.innerHTML = "&nbsp;";
-            document.querySelector('#divAux').prepend(nbspSpan);
-            nbspSpan = document.createElement("span");
-            nbspSpan.innerHTML = "&nbsp;";
-            document.querySelector('#divAux').prepend(nbspSpan);
+	var videoFill = document.querySelector('video');
+	var iconMidPlay = document.getElementsByClassName('icon_mid_play')[0];
+	if (undefined === videoFill && window.frames.length > 0) {
+		videoFill = window.frames[0].document.querySelector('video');
+		iconMidPlay = window.frames[0].document.getElementsByClassName('icon_mid_play')[0];
+	}
+	if (undefined !== videoFill) {
+		var nbspSpan = document.createElement("span");
+		nbspSpan.innerHTML = "&nbsp;";
+		document.querySelector('#divAux').prepend(nbspSpan);
+		nbspSpan = document.createElement("span");
+		nbspSpan.innerHTML = "&nbsp;";
+		document.querySelector('#divAux').prepend(nbspSpan);
 
-            var myVideoLink = document.createElement("a");
-            myVideoLink.id = "video_direct_link";
-            myVideoLink.href = videoFill.getAttribute("origin_src");
-            myVideoLink.innerHTML = "Video Direct Link";
-            myVideoLink.style = "color: blue; text-decoration-line: underline; text-decoration: wavy";
-            document.querySelector('#divAux').prepend(myVideoLink);
-            nbspSpan = document.createElement("span");
-            nbspSpan.innerHTML = "&nbsp;";
-            document.querySelector('#divAux').prepend(nbspSpan);
+		var myVideoLink = document.createElement("a");
+		myVideoLink.id = "video_direct_link";
+		myVideoLink.href = videoFill.getAttribute("origin_src");
+		myVideoLink.innerHTML = "Video Direct Link";
+		myVideoLink.style = "color: blue; text-decoration-line: underline; text-decoration: wavy";
+		document.querySelector('#divAux').prepend(myVideoLink);
+		nbspSpan = document.createElement("span");
+		nbspSpan.innerHTML = "&nbsp;";
+		document.querySelector('#divAux').prepend(nbspSpan);
 
-            var setPlaybackRate = document.createElement("button");
-            setPlaybackRate.id = "setPlaybackRate";
-            setPlaybackRate.style.margin = "5px";
-            setPlaybackRate.textContent = "Playback Rate";
-            document.querySelector('#divAux').prepend(setPlaybackRate);
-            $('#setPlaybackRate').click(() =>  {
-                window.frames[0].document.querySelector('video').playbackRate = $('#currentRate')[0].value;
-            });
+		var setPlaybackRate = document.createElement("button");
+		setPlaybackRate.id = "setPlaybackRate";
+		setPlaybackRate.style.margin = "5px";
+		setPlaybackRate.textContent = "Playback Rate";
+		document.querySelector('#divAux').prepend(setPlaybackRate);
+		$('#setPlaybackRate').click(() =>  {
+			videoFill.playbackRate = $('#currentRate')[0].value;
+		});
 
-            var mySelect = document.createElement("select");
-            mySelect.id = "currentRate";
-            mySelect.style.margin = "5px";
-            var myOpt10 = document.createElement("option");
-            myOpt10.value = 1;
-            myOpt10.text = "1";
-            var myOpt15 = document.createElement("option");
-            myOpt15.value = 1.5;
-            myOpt15.text = "1.5";
-            var myOpt20 = document.createElement("option");
-            myOpt20.value = 2;
-            myOpt20.text = "2";
-            mySelect.appendChild(myOpt10);
-            mySelect.appendChild(myOpt15);
-            mySelect.appendChild(myOpt20);
-            document.querySelector('#divAux').prepend(mySelect);
-            $('#currentRate').change(() => {
-                $('#setPlaybackRate').click();
-            });
-            mySelect.value = 1.5;
-            $('#setPlaybackRate').click();
-            window.frames[0].document.getElementsByClassName('icon_mid_play')[0].addEventListener("click", function() {
-                setTimeout(function() {
-                    $('#setPlaybackRate').click();
-                }, 50);
-            });
-        }
-    }
+		var mySelect = document.createElement("select");
+		mySelect.id = "currentRate";
+		mySelect.style.margin = "5px";
+		var myOpt10 = document.createElement("option");
+		myOpt10.value = 1;
+		myOpt10.text = "1";
+		var myOpt15 = document.createElement("option");
+		myOpt15.value = 1.5;
+		myOpt15.text = "1.5";
+		var myOpt20 = document.createElement("option");
+		myOpt20.value = 2;
+		myOpt20.text = "2";
+		mySelect.appendChild(myOpt10);
+		mySelect.appendChild(myOpt15);
+		mySelect.appendChild(myOpt20);
+		document.querySelector('#divAux').prepend(mySelect);
+		$('#currentRate').change(() => {
+			$('#setPlaybackRate').click();
+		});
+		mySelect.value = 1.5;
+		$('#setPlaybackRate').click();
+		iconMidPlay.addEventListener("click", function() {
+			setTimeout(function() {
+				$('#setPlaybackRate').click();
+			}, 50);
+		});
+	}
 }, 2000);
