@@ -15,6 +15,7 @@
 //$('.rich_media').style.width='100%';
 qrCode = document.getElementById('js_pc_qr_code');
 if (undefined != qrCode) {
+	// some page doesn't have QR code element.
 	qrCode.remove();
 }
 
