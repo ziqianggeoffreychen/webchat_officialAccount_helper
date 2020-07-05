@@ -100,6 +100,7 @@ setTimeout(function() {
 	var videoFill = document.querySelector('video');
 	var iconMidPlay = document.getElementsByClassName('icon_mid_play')[0];
 	if ((undefined === videoFill || null === videoFill) && window.frames.length > 0) {
+		// sometimes videoFill is in frame.
 		videoFill = window.frames[0].document.querySelector('video');
 		iconMidPlay = window.frames[0].document.getElementsByClassName('icon_mid_play')[0];
 	}
