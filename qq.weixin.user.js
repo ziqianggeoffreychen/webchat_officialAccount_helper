@@ -99,11 +99,11 @@ setTimeout(function() {
 
 	var videoFill = document.querySelector('video');
 	var iconMidPlay = document.getElementsByClassName('icon_mid_play')[0];
-	if (undefined === videoFill && window.frames.length > 0) {
+	if ((undefined === videoFill || null === videoFill) && window.frames.length > 0) {
 		videoFill = window.frames[0].document.querySelector('video');
 		iconMidPlay = window.frames[0].document.getElementsByClassName('icon_mid_play')[0];
 	}
-	if (undefined !== videoFill) {
+	if (undefined !== videoFill && null !== videoFill) {
 		var nbspSpan = document.createElement("span");
 		nbspSpan.innerHTML = "&nbsp;";
 		document.querySelector('#divAux').prepend(nbspSpan);
