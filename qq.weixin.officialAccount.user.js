@@ -24,7 +24,6 @@ if (0 === $('.top-1.gen-1').length) {
     return;
 }
 
-// UTF-8 chars are no longer supported by new Tampermonkey. Need to replace below Chinese characters manually.
 // @name 微信公众号·轻松阅读
 var myBtnGenTextContent = "全部打开",
     myBtnTopTextContent = "全部打开：头条",
@@ -137,6 +136,11 @@ $('document').ready(() => {
     myBtn60s.style.margin = "5px";
     myBtn60s.textContent = myBtn60sTextContent;
 
+    var myBtnResetColor = document.createElement("button");
+    myBtnResetColor.id = "myBtnResetColor";
+    myBtnResetColor.style.margin = "5px";
+    myBtnResetColor.textContent = "隐藏着色";
+
     document.body.prepend(document.createElement("br"),
                           windowOpenDelay,
                           concurrentOpenPages,
@@ -146,6 +150,7 @@ $('document').ready(() => {
                           myBtnExt,
                           myBtnToggleDisplay,
                           myBtn60s,
+                          myBtnResetColor,
                           document.createElement("br"));
 
     var radioLabel20 = document.createElement("span");
@@ -228,6 +233,9 @@ $('document').ready(() => {
                 currentOpenPages++;
             }
         });
+    });
+    $('#myBtnResetColor').click(() => {
+        $('a[class*=-' + $('#currentSelectedPage')[0].value + ']').each((idx, thisLnk) => {thisLnk.style.color = "";});
     });
     $('#openAllGenArticleOnSpecifiedPage').click(() => {openNextBunch('gen');});
     $('#openAllTopArticleOnSpecifiedPage').click(() => {openNextBunch('top');});
