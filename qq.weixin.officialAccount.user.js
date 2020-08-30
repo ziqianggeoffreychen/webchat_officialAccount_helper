@@ -4,7 +4,7 @@
 // @description Add a button to open all URLs in one page.
 // @encoding    utf-8
 // @include     file:///C:/Users/*.html
-// @require     http://code.jquery.com/jquery-3.2.1.min.js
+// @require     https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js
 // @run-at      document-end
 // @version     0.0.2
 // ==/UserScript==
@@ -14,7 +14,7 @@ Debug in Chrome Console, manually import JQuery.
 
 var importJs=document.createElement('script');
 importJs.setAttribute("type","text/javascript");
-importJs.setAttribute("src", 'http://code.jquery.com/jquery-3.2.1.min.js');
+importJs.setAttribute("src", 'https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js');
 document.head.appendChild(importJs);
 */
 
@@ -29,7 +29,7 @@ var myBtnGenTextContent = "全部打开",
     myBtnTopTextContent = "全部打开：头条",
     myBtnExtTextContent = "全部打开：普通",
     myBtn60sTextContent = "罗胖60秒",
-    dingEverydayContent = "每日钉一下",
+    skipKeywords = ["每日钉一下", "百匠优选", "百匠清单"],
     btnToggleTextDisplayAll = "全部显示",
     btnToggleTextHideAll = "全部显示",
     batch7 = "一次打开7页",
@@ -299,10 +299,12 @@ function prependTabs(n) {
 function openNextBunch(className) {
     // console.debug("button openAll [" + className + "] articles is clicked.");
     $('a[class*=ext-]').each((idx, thisLnk) => {
-        if (0 === thisLnk.innerText.indexOf(dingEverydayContent)) {
-            thisLnk.visited = true;
-            thisLnk.style.color = classToColor["gen"];
-        }
+        skipKeywords.forEach((words, index, array) => {
+            if (0 <= thisLnk.innerText.indexOf(words)) {
+                thisLnk.visited = true;
+                thisLnk.style.color = classToColor["gen"];
+            }
+        });
     });
     var maxPages = $("input[name='radioBatchSize']:checked").val(),
         openDelay = $("#windowOpenDelay")[0].value,
