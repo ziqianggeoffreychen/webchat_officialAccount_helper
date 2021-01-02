@@ -4,7 +4,7 @@
 // @description Add a button to open all URLs in one page.
 // @encoding    utf-8
 // @include     file:///C:/Users/*.html
-// @require     https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js
+// @require     https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js
 // @run-at      document-end
 // @version     0.0.2
 // ==/UserScript==
@@ -14,7 +14,7 @@ Debug in Chrome Console, manually import JQuery.
 
 var importJs=document.createElement('script');
 importJs.setAttribute("type","text/javascript");
-importJs.setAttribute("src", 'https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js');
+importJs.setAttribute("src", 'https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js');
 document.head.appendChild(importJs);
 */
 
@@ -29,7 +29,7 @@ var myBtnGenTextContent = "全部打开",
     myBtnTopTextContent = "全部打开：头条",
     myBtnExtTextContent = "全部打开：普通",
     myBtn60sTextContent = "罗胖60秒",
-    skipKeywords = ["每日钉一下", "百匠优选", "百匠清单"],
+    skipKeywords = ["每日钉一下", "百匠优选", "百匠清单", "万一开户", "龙头券商万1.2", "你需要知道的十大科技产业趋势", "看清2021年科技产业10大趋势", "融资利率低至", "创新地图招聘启事", "CKA实战培训"],
     btnToggleTextDisplayAll = "全部显示",
     btnToggleTextHideAll = "全部显示",
     batch7 = "一次打开7页",
