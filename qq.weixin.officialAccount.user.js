@@ -29,9 +29,10 @@ var myBtnGenTextContent = "全部打开",
     myBtnTopTextContent = "全部打开：头条",
     myBtnExtTextContent = "全部打开：普通",
     myBtn60sTextContent = "罗胖60秒",
-    skipKeywords = ["每日钉一下", "百匠优选", "百匠清单", "万一开户", "龙头券商万1.2", "你需要知道的十大科技产业趋势", "看清2021年科技产业10大趋势", "融资利率低至", "创新地图招聘启事", "CKA实战培训"],
+    skipKeywords = ["每日钉一下", "百匠优选", "百匠清单", "万一开户", "龙头券商万1.2", "你需要知道的十大科技产业趋势", "看清2021年科技产业10大趋势", "融资利率低至", "创新地图招聘启事", "CKA实战培训", "打开股票与基金之门的财富密码"],
     btnToggleTextDisplayAll = "全部显示",
     btnToggleTextHideAll = "全部显示",
+    batch5 = "一次打开5页",
     batch7 = "一次打开7页",
     batch10 = "一次打开10页";
     batch20 = "一次打开20页";
@@ -50,6 +51,11 @@ radioBatchSize7.type = "radio";
 radioBatchSize7.name = "radioBatchSize";
 radioBatchSize7.value = 7;
 radioBatchSize7.checked = weekendMode;
+
+var radioBatchSize5 = document.createElement("input");
+radioBatchSize5.type = "radio";
+radioBatchSize5.name = "radioBatchSize";
+radioBatchSize5.value = 5;
 
 var radioBatchSize20 = document.createElement("input");
 radioBatchSize20.type = "radio";
@@ -167,6 +173,11 @@ $('document').ready(() => {
     radioLabel7.innerHTML = batch7;
     document.body.prepend(radioLabel7);
     document.body.prepend(radioBatchSize7);
+
+    var radioLabel5 = document.createElement("span");
+    radioLabel5.innerHTML = batch5;
+    document.body.prepend(radioLabel5);
+    document.body.prepend(radioBatchSize5);
 
     prependTabs(6);
 
